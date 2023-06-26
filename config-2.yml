@@ -1,0 +1,23 @@
+version: 2.1
+jobs:
+  error_handling_job:
+    docker:
+      - image: circleci/node:13.8.0
+
+    steps:
+      - run:
+          name: Fail intentionally
+          command: exit 1
+
+      - run:
+          name: Error handling step
+          command: echo "Error handling step executed"
+
+          # Chỉ chạy bước này khi bước trước đó thất bại
+          when: on_fail
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - error_handling_job
